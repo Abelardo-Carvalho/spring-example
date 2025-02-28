@@ -3,6 +3,7 @@ package com.example.springboot.controllers;
 import com.example.springboot.dtos.ProductModelDto;
 import com.example.springboot.models.ProductModel;
 import com.example.springboot.repositories.ProductRepository;
+import com.example.springboot.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,14 @@ import java.util.UUID;
 public class ProductController {
 
     @Autowired
-    ProductRepository productRepository;
+    ProductService productService;
 
     @PostMapping("/products")
     public ResponseEntity<ProductModel> saveProducts(@RequestBody @Valid ProductModelDto productModelDto){
-        var productModel = new ProductModel(); //instacia ProductModel
-        BeanUtils.copyProperties(productModelDto, productModel);//copia os dados do dto para o model
-        return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(productModel)); //O status retorna se deu certo a operação no postman.
-        // O body é o que retorna no body do postman. O metodo save não existe no ProductRepository, mas extende do JPA.
-
+        return productService.saveProductsService(productModelDto);
     }
 
-    @GetMapping("/products")
+   /* @GetMapping("/products")
     public ResponseEntity<List<ProductModel>> getAllProducts(){
         return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
     }
@@ -64,5 +61,5 @@ public class ProductController {
         }
         productRepository.delete(productO.get());
         return ResponseEntity.status(HttpStatus.OK).body("Product deleted sucefull");
-    }
+    }*/
 }
