@@ -27,39 +27,27 @@ public class ProductController {
         return productService.saveProductsService(productModelDto);
     }
 
-   /* @GetMapping("/products")
+    @GetMapping("/products")
     public ResponseEntity<List<ProductModel>> getAllProducts(){
-        return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
+        return productService.getAllProducts();
     }
+
 
     @GetMapping("/products/{id}")
     public ResponseEntity<Object> getOneProduct(@PathVariable(value="id") UUID id){
-        Optional<ProductModel> productO = productRepository.findById(id);
-        if (productO.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        return productService.getOneProduct(id);
 
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(productO.get());
     }
 
     @PutMapping("/products/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value = "id") UUID id,@RequestBody @Valid ProductModelDto productRecordDto){
-        Optional<ProductModel> productO = productRepository.findById(id);
-        if (productO.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-        }
-        var productModel = productO.get();
-        BeanUtils.copyProperties(productRecordDto, productModel);
-        return ResponseEntity.status(HttpStatus.OK).body(productRepository.save(productModel));
+
+        return productService.updateProduct(id,productRecordDto);
     }
+
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") UUID id){
-        Optional <ProductModel> productO = productRepository.findById(id);
-        if (productO.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-        }
-        productRepository.delete(productO.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Product deleted sucefull");
-    }*/
+        return productService.deleteProduct(id);
+    }
 }
